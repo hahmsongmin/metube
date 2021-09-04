@@ -1,0 +1,36 @@
+.home-container {
+  width: 80%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  padding: 30px;
+}
+
+.mostPopular {
+  background-color: var(--color-white);
+  width: 350px;
+  height: 250px;
+  margin: 10px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--size-border-radius);
+  transition: all var(--animation-duration) ease;
+}
+
+.mostPopular:hover {
+  transform: scale(1.1);
+}
+
+.mostPopular-thumbnail {
+  height: 200px;
+}
+
+.mostPopular-description {
+  font-size: 20px;
+  font-weight: bold;
+}
