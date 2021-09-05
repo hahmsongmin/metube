@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { youtubeApi } from "./api";
 import "./app.css";
-import Home from "./components/home";
-import Nav from "./components/nav";
+import React, { useEffect, useState } from "react";
+import Routers from "./routers";
+import { youtubeApi } from "./api";
 
 function App() {
   const [mostPopular, setMostPopular] = useState();
@@ -25,12 +24,7 @@ function App() {
     getMostPopular();
   }, []);
 
-  return (
-    <div className="main-container">
-      <Nav />
-      <Home mostPopular={mostPopular} loading={loading} />
-    </div>
-  );
+  return <Routers mostPopular={mostPopular} loading={loading} />;
 }
 
 export default App;
