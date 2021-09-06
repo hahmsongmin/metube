@@ -42,4 +42,12 @@ export const youtubeApi = {
         id: videoId,
       },
     }),
+
+  channelInfo: (channelId) =>
+    api.get("channels", {
+      params: {
+        part: "snippet",
+        id: channelId,
+      },
+    }),
 };

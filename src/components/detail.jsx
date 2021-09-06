@@ -4,9 +4,18 @@ import { withRouter, Link } from "react-router-dom";
 import { youtubeApi } from "../api";
 
 const Detail = withRouter(({ location: { pathname }, mostPopular }) => {
-  const [title, setTitle] = useState();
-  const [tags, setTags] = useState();
   const [loading, setLoading] = useState(true);
+  const [tags, setTags] = useState();
+  const [title, setTitle] = useState();
+  const [count, setCount] = useState();
+  const [channelId, setChannelId] = useState();
+  const [publishedAt, setPublishedAt] = useState();
+
+  const [channel, setChannel] = useState({
+    channelTitle: null,
+    channelDescription: null,
+    thumbnails: null,
+  });
 
   const videoTitle = async () => {
     try {
@@ -16,6 +25,9 @@ const Detail = withRouter(({ location: { pathname }, mostPopular }) => {
       } = await youtubeApi.videoTitle(videoId);
       setTitle(items[0].snippet.localized.title);
       setTags(items[0].snippet.tags);
+      setChannelId(items[0].snippet.channelId.split("-")[0]);
+      const temp = items[0].snippet.publishedAt.split("T")[0];
+      setPublishedAt(temp.replace(/-/g, "."));
     } catch (error) {
       console.log(error);
     } finally {
@@ -23,12 +35,51 @@ const Detail = withRouter(({ location: { pathname }, mostPopular }) => {
     }
   };
 
-  const videoCount = () => {};
+  const videoCount = async () => {
+    const videoId = pathname.split("/")[1];
+    try {
+      const {
+        data: { items },
+      } = await youtubeApi.videoCount(videoId);
+      const { viewCount } = items[0].statistics;
+      setCount({
+        viewCount: viewCount.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const channelInfo = async () => {
+    try {
+      const {
+        data: { items },
+      } = await youtubeApi.channelInfo(channelId);
+      const channelTitle = items[0].snippet.title;
+      const channelDescription = items[0].snippet.description;
+      const thumbnails = items[0].snippet.thumbnails.default.url;
+      setChannel({
+        ...channel,
+        channelTitle,
+        channelDescription,
+        thumbnails,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     videoTitle();
+  }, [title]);
+
+  useEffect(() => {
     videoCount();
-  }, []);
+  }, [count]);
+
+  useEffect(() => {
+    channelInfo();
+  }, [channel]);
 
   return (
     <div className="detail-container">
@@ -37,7 +88,7 @@ const Detail = withRouter(({ location: { pathname }, mostPopular }) => {
           title="contents"
           className="youtube"
           src={`https://www.youtube.com/embed${pathname}?autoplay=1`}
-          allowFullScreen=""
+          allowFullScreen="true"
           frameBorder="false"
         ></iframe>
         <div className="detail-description-container">
@@ -59,15 +110,33 @@ const Detail = withRouter(({ location: { pathname }, mostPopular }) => {
             ))}
         </div>
       </div>
-      <div className="video-list">
-        <h2 className="video-title">{title}</h2>
-        <div className="video-tags">
-          {tags &&
-            tags.map((tag, index) =>
-              index < 12 ? <div>{`#${tag}`}</div> : null
-            )}
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="video-list">
+          <div className="video-tags">
+            {tags &&
+              tags.map((tag, index) =>
+                index < 12 ? <div>{`#${tag}`}</div> : null
+              )}
+          </div>
+          <h2 className="video-title">{title}</h2>
+          <div className="video-count">
+            <div>{`조회수 ${count?.viewCount}회 · ${publishedAt}.`}</div>
+          </div>
+          <hr />
+          <div className="video-channel">
+            <div className="channel-img">
+              {/* <img src={`${channel.thumbnails}`} /> */}
+              {console.log(channel.thumbnails)}
+            </div>
+            <div className="channel-titleCount">
+              <span>{channel.channelTitle}</span>
+              <span>{channel.channelDescription}</span>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 });

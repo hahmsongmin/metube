@@ -44,4 +44,16 @@ iframe {
 .video-tags {
   display: flex;
   justify-content: flex-start;
+  color: var(--color-blue);
+}
+
+.video-channel {
+  display: flex;
+  align-items: center;
+}
+
+.channel-titleCount {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
