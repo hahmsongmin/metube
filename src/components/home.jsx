@@ -9,15 +9,15 @@ const Home = ({ mostPopular, loading }) => {
         <Loader />
       ) : (
         <div className="home-container">
-          {mostPopular.map((item) => (
+          {mostPopular?.map((item) => (
             <Link to={`/${item.id}`} key={item.id} className="mostPopular">
-              <a href="" className="mostPopular-thumbnail">
+              <div className="mostPopular-thumbnail">
                 <img src={item.snippet.thumbnails.medium.url} />
-              </a>
+              </div>
               <div className="mostPopular-description">
                 <span>
-                  {item.snippet.title && item.snippet.title.length > 40
-                    ? `${item.snippet.title.substr(0, 40)}...`
+                  {item.snippet.title && item.snippet.title.length > 23
+                    ? `${item.snippet.title.substr(0, 23)}...`
                     : item.snippet.title}
                 </span>
                 <span>{item.snippet.channelTitle}</span>

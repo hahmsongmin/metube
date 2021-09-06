@@ -14,7 +14,13 @@ const Routers = ({ mostPopular, loading }) => {
             path="/"
             render={() => <Home mostPopular={mostPopular} loading={loading} />}
           />
-          <Route exact path="/:id" component={Detail} />
+          <Route
+            exact
+            path="/:id"
+            render={() => (
+              <Detail mostPopular={mostPopular} loading={loading} />
+            )}
+          />
         </Switch>
       </div>
     </HashRouter>
