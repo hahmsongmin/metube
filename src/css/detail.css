@@ -38,6 +38,7 @@ iframe {
 /* video info */
 .video-list {
   width: 70%;
+  height: auto;
   padding: 5px;
 }
 
@@ -50,10 +51,17 @@ iframe {
 .video-channel {
   display: flex;
   align-items: center;
+  margin-top: 20px;
 }
 
 .channel-titleCount {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-left: 10px;
+}
+
+.channel-titleCount span:first-child {
+  font-weight: bold;
+  font-size: var(--font-medium);
 }

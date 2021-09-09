@@ -5,11 +5,11 @@ import { youtubeApi } from "../api";
 
 const Detail = withRouter(({ location: { pathname }, mostPopular }) => {
   const [loading, setLoading] = useState(true);
-  const [tags, setTags] = useState();
-  const [title, setTitle] = useState();
-  const [count, setCount] = useState();
-  const [channelId, setChannelId] = useState();
-  const [publishedAt, setPublishedAt] = useState();
+  const [tags, setTags] = useState([]);
+  const [title, setTitle] = useState("");
+  const [count, setCount] = useState(null);
+  const [channelId, setChannelId] = useState(null);
+  const [publishedAt, setPublishedAt] = useState(null);
 
   const [channel, setChannel] = useState({
     channelTitle: null,
@@ -58,8 +58,8 @@ const Detail = withRouter(({ location: { pathname }, mostPopular }) => {
       const channelTitle = items[0].snippet.title;
       const channelDescription = items[0].snippet.description;
       const thumbnails = items[0].snippet.thumbnails.default.url;
+      console.log(items);
       setChannel({
-        ...channel,
         channelTitle,
         channelDescription,
         thumbnails,
@@ -71,15 +71,15 @@ const Detail = withRouter(({ location: { pathname }, mostPopular }) => {
 
   useEffect(() => {
     videoTitle();
-  }, [title]);
+  }, []);
 
   useEffect(() => {
     videoCount();
-  }, [count]);
+  }, []);
 
   useEffect(() => {
     channelInfo();
-  }, [channel]);
+  }, []);
 
   return (
     <div className="detail-container">
@@ -127,8 +127,7 @@ const Detail = withRouter(({ location: { pathname }, mostPopular }) => {
           <hr />
           <div className="video-channel">
             <div className="channel-img">
-              {/* <img src={`${channel.thumbnails}`} /> */}
-              {console.log(channel.thumbnails)}
+              <img src={`${channel.thumbnails}`} />
             </div>
             <div className="channel-titleCount">
               <span>{channel.channelTitle}</span>
